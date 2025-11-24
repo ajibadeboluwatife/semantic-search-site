@@ -1,4 +1,4 @@
-# Manuel Semantic Search Site
+# bolu Semantic Search Site
 
 A tiny website with a centered search bar that performs **semantic search** over your products.  
 Runs locally on macOS using **Docker**: a **FastAPI** backend + **Qdrant** vector database + a minimal HTML UI.
