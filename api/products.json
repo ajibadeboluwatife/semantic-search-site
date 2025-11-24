@@ -1,0 +1,7 @@
+[
+    {"id": "p1", "name": "Ultra Soft Bath Towels", "description": "Ring-spun cotton towels for hotels and spas", "price": 19.99, "url": "/product/p1"},
+    {"id": "p2", "name": "Commercial Laundry Detergent", "description": "High-efficiency detergent for industrial washers", "price": 45.00, "url": "/product/p2"},
+    {"id": "p3", "name": "Stain Remover Spray", "description": "Enzyme-based pre-treatment for tough stains", "price": 8.49, "url": "/product/p3"},
+    {"id": "p4", "name": "Microfiber Cleaning Cloths", "description": "Lint-free cloths for delicate surfaces", "price": 12.00, "url": "/product/p4"}
+  ]
+  
