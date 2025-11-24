@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Product Search</title>
+  <style>
+    :root { --fg:#e5e7eb; --muted:#9ca3af; --bg:#0b1020; --card:#111827; --accent:#22d3ee; }
+    html,body {height:100%; margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto;}
+    body { display:grid; place-items:center; background: radial-gradient(1200px 800px at 50% 30%, #0f172a 20%, var(--bg)); color: var(--fg); }
+    .wrap { width:min(780px, 92vw); text-align:center; }
+    h1 { font-weight:700; letter-spacing:.2px; margin:0 0 18px; }
+    p { color: var(--muted); margin:0 0 28px; }
+    form { display:flex; gap:10px; justify-content:center; }
+    input[type="search"] {
+      flex:1; max-width:540px; padding:16px 18px; border-radius:999px; border:1px solid #243b53;
+      background: linear-gradient(180deg,#0b132b,#0b1221); color:var(--fg); font-size:16px; outline: none;
+      box-shadow: 0 0 0 0 rgba(34,211,238,0); transition: box-shadow .2s ease, border-color .2s ease, transform .04s ease;
+    }
+    input[type="search"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(34,211,238,.2); }
+    button {
+      padding: 14px 18px; border-radius: 999px; border:1px solid #155e75; background: linear-gradient(180deg,#0e7490,#155e75);
+      color:white; font-weight:600; cursor:pointer; transition: transform .04s ease, filter .2s ease;
+    }
+    button:active { transform: translateY(1px) }
+    .results { margin-top:26px; text-align:left; display:grid; gap:12px; }
+    .card {
+      background: linear-gradient(180deg, #0b132b 0%, #0a1024 100%);
+      border: 1px solid #1f2a44; border-radius: 16px; padding: 14px 16px;
+      transition: border-color .2s ease, transform .08s ease;
+    }
+    .card:hover { border-color:#33456a; transform: translateY(-1px); }
+    .name { font-weight:600 }
+    .desc { color: var(--muted); margin: 6px 0 8px }
+    .price { color:#99f6e4; font-weight:600 }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Search products</h1>
+    <p>Semantic search powered by embeddings. Type what you need, not just keywords.</p>
+    <form id="search-form">
+      <input id="q" name="q" type="search" placeholder="e.g. soft towels for hotels" autofocus />
+      <button type="submit">Search</button>
+    </form>
+    <div id="results" class="results" role="list"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('search-form');
+    const results = document.getElementById('results');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const q = new FormData(form).get('q') || '';
+      results.innerHTML = '';
+      const r = await fetch('/search?q=' + encodeURIComponent(q));
+      const items = await r.json();
+      if (!items.length) { results.innerHTML = '<div class="card">No results.</div>'; return; }
+      for (const it of items) {
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.innerHTML = `
+          <div class="name">${it.name}</div>
+          <div class="desc">${it.description ?? ''}</div>
+          <div class="price">$${(it.price ?? 0).toFixed(2)}</div>
+        `;
+        results.appendChild(el);
+      }
+    });
+  </script>
+</body>
+</html>
